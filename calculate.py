@@ -1,13 +1,41 @@
 import streamlit as st
+import sys
+
+# Debug: Check if plotly is installed
+try:
+    import plotly
+    import plotly.express as px
+    st.success("Plotly and Plotly Express are installed!")
+except ModuleNotFoundError as e:
+    st.error(f"Failed to import package: {e}")
+    st.error(f"Python version: {sys.version}")
+    st.error(f"Installed packages: {sys.executable} -m pip list")
+    st.stop()
+
 import pandas as pd
 import io
-import plotly.express as px
 
+# Rest of your code...
 # ----------------- Page Config -----------------
 st.set_page_config(page_title="📊 Transaction Analyzer", layout="wide")
 
 st.title("📊 Transaction Analyzer")
 st.markdown("Analyze transaction amounts by **Account Code**, with filters, pivot tables, charts, and Excel export.")
+
+# ----------------- Download requirements.txt -----------------
+st.markdown("### 📋 Download Dependencies")
+requirements_content = """streamlit==1.36.0
+pandas==2.2.2
+openpyxl==3.1.5
+plotly==5.22.0
+plotly-express==0.5.0"""
+st.download_button(
+    label="📥 Download requirements.txt",
+    data=requirements_content,
+    file_name="requirements.txt",
+    mime="text/plain"
+)
+st.divider()
 
 # ----------------- File Upload -----------------
 uploaded_file = st.file_uploader("📁 Upload Excel File", type=["xlsx"])
